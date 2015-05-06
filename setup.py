@@ -5,20 +5,23 @@ import os.path
 from distutils import errors
 from jcc import cpp
 
-TIKA_VERSION = 1.1
+TIKA_VERSION = '1.8'
+OSGI_VERSION = '5.0.0'
+
 TIKA_APP = "tika-app-%s.jar" %(TIKA_VERSION)
 TIKA_CORE = "tika-core-%s.jar" %(TIKA_VERSION)
 TIKA_PARSERS = "tika-parsers-%s.jar" %(TIKA_VERSION)
+OSGI = "org.osgi.core-%s.jar" %(OSGI_VERSION)
+OSGI_COMPENDIUM = "org.osgi.compendium-%s.jar" %(OSGI_VERSION)
 
 deps =  {
-    "osgi": "org.eclipse.osgi.jar",
+    "osgi_core": OSGI,
+    "osgi_compendium": OSGI_COMPENDIUM,
     "tika_app": TIKA_APP,
     "tika_core": TIKA_CORE,
     "tika_parsers": TIKA_PARSERS,
-    "log4j": "log4j.properties.jar",
     "jcc": "jcc"
     }
-
 
 def check_deps(required, found):
     satisfied = True
@@ -47,14 +50,14 @@ def find_deps(required):
 
 def get_jcc_args(jcc_path):
     jcc_options = {
-        'include': (found['osgi'],  found['log4j'], found['tika_app']),
-        'package': ('org.xml.sax', 'org.apache.tika'),
-        'jar': (found['tika_parsers'], found['tika_core']),
+        'include': (found['tika_app'], found['osgi_core'],  found['osgi_compendium'] ),
+        'package': ('org.xml.sax'),
+        'jar': (found['tika_core'],found['tika_parsers'],),
         'python': 'tika',
         'version': TIKA_VERSION,
-        'module': 'parser',
+        'module': 'tika_parser',
         'reserved': ('asm',),
-        'classes': ('java.io.File', 'java.io.FileInputStream', 'java.io.ByteArrayInputStream'),
+        'classes': ('java.io.File', 'java.io.FileInputStream', 'java.io.ByteArrayInputStream', 'java.io.StringBufferInputStream'),
         }
     jcc_args = [os.path.join(jcc_path, 'nonexistent-argv-0')]
     setup_args = []
@@ -100,6 +103,6 @@ def get_jcc_args(jcc_path):
 
 found = find_deps(deps)
 if not check_deps(deps, found):
-    raise errors.DistutilsFileError("Dependencies not satisfied")
+    raise errors.DistutilsFileError("Dependencies not satisfied. Run 'sh deps.sh' (you will need maven installed)")
 jcc_args = get_jcc_args(found["jcc"])
 cpp.jcc(jcc_args)

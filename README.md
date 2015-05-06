@@ -4,23 +4,22 @@
 
 * Java >= 1.5
 * [JCC](http://lucene.apache.org/pylucene/jcc/index.html)
+* [Maven](http://maven.apache.org)
 
 ## Installation
+	$ git clone git+https://github.com/m4mnux/python-tika.git
+        $ sh deps.sh
 	$ python setup.py build
 	$ python setup.py install
-
- Or,
- 
-	$ pip install git+https://github.com/sudharsh/python-tika.git
 
 ## Usage
 
 To use the `AutoDetectParser`,
 
 	import tika
-	tika.initVM()
+	tika.initVM(vmargs='-Dlog4j.config=./log4j.xml')
 
-	from tika import parser
+	from tika import tika_parser
    
 	print parser.from_buffer("<html><body>Hello World</body></html>
 	# Or directly from a file, 
@@ -36,11 +35,5 @@ returns a `dict`,
 
 ## Thanks
 
-`setup.py` script derived from [aptivate/python-tika](http://github.com/aptivate/python-tika)
-
-
-   
-
-   
-   
+`setup.py` script derived from [sudharsh/python-tika](http://github.com/sudharsh/python-tika)
 

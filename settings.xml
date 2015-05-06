@@ -1,0 +1,26 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                http://maven.apache.org/xsd/settings-1.0.0.xsd">
+<!--
+  <localRepository>repo</localRepository>
+-->
+  <interactiveMode>true</interactiveMode>
+  <usePluginRegistry>false</usePluginRegistry>
+  <offline>false</offline>
+  <profiles>
+    <profile>
+       <id>development</id>
+       <properties>
+         <maven.test.skip>true</maven.test.skip>
+         <excludeTransitive>true</excludeTransitive>
+         <outputDirectory>lib</outputDirectory>
+         <tika.version>1.8</tika.version>
+         <osgi.version>5.0.0</osgi.version>
+       </properties>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>development</activeProfile>
+  </activeProfiles> 
+</settings>
